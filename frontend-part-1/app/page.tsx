@@ -198,31 +198,22 @@ export default function EcoTokenDashboard() {
                 />
               </div>
               <div>
-                <div className="flex items-center gap-3">
-                  <h1 className="text-2xl font-bold">EcoToken</h1>
-                  {/* Powered by Snowflake branding */}
-                  <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full">
-                    <span className="text-xs font-medium text-white/90">Powered by</span>
-                    <div className="flex items-center ml-1">
-                      <div className="w-4 h-4 mr-1">
-                        <svg viewBox="0 0 24 24" className="w-full h-full fill-white">
-                          {/* Snowflake icon - central diamond with 6 arms */}
-                          <rect x="10" y="10" width="4" height="4" rx="1" transform="rotate(45 12 12)"/>
-                          <rect x="12" y="2" width="2" height="6" rx="1"/>
-                          <rect x="12" y="16" width="2" height="6" rx="1"/>
-                          <rect x="2" y="11" width="6" height="2" rx="1"/>
-                          <rect x="16" y="11" width="6" height="2" rx="1"/>
-                          <rect x="4.5" y="4.5" width="2" height="6" rx="1" transform="rotate(45 5.5 7.5)"/>
-                          <rect x="17.5" y="17.5" width="2" height="6" rx="1" transform="rotate(45 18.5 20.5)"/>
-                          <rect x="17.5" y="4.5" width="6" height="2" rx="1" transform="rotate(-45 20.5 5.5)"/>
-                          <rect x="4.5" y="17.5" width="6" height="2" rx="1" transform="rotate(-45 7.5 18.5)"/>
-                        </svg>
-                      </div>
-                      <span className="text-xs font-bold text-white">Snowflake</span>
+                <h1 className="text-2xl font-bold">EcoToken</h1>
+                <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
+                {/* Powered by Snowflake branding */}
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full mt-1 w-fit">
+                  <span className="text-xs font-medium text-white/90">Powered by</span>
+                  <div className="flex items-center ml-1">
+                    <div className="w-3 h-3 mr-1">
+                      <svg viewBox="0 0 24 24" className="w-full h-full fill-white">
+                        {/* Accurate Snowflake logo - central diamond with 6 V-shaped arms */}
+                        <rect x="11" y="11" width="2" height="2" rx="0.5" transform="rotate(45 12 12)"/>
+                        <path d="M12 4L13 8L17 7L14 11L18 12L14 13L17 17L13 16L12 20L11 16L7 17L10 13L6 12L10 11L7 7L11 8Z" fill="white"/>
+                      </svg>
                     </div>
+                    <span className="text-xs font-bold text-white">Snowflake</span>
                   </div>
                 </div>
-                <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
               </div>
             </div>
             {/* TODO: Make this button functional - should open user profile/settings */}
