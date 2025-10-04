@@ -123,3 +123,27 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Custom scrollbar styles - hide arrows */
+.scrollbar-no-arrows::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scrollbar-no-arrows::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-no-arrows::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.3);
+  border-radius: 3px;
+}
+
+.scrollbar-no-arrows::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.5);
+}
+
+/* Hide scrollbar arrows in Firefox */
+.scrollbar-no-arrows {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(156, 163, 175, 0.3) transparent;
+}

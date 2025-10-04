@@ -336,7 +336,7 @@ export default function EcoTokenDashboard() {
                 Show all history
               </Button>
             </div>
-            <div className="space-y-1 max-h-48 overflow-y-auto">
+            <div className="space-y-1 max-h-48 overflow-y-auto scrollbar-no-arrows">
               {mockActivities.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 transition-colors">
                   <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></div>
