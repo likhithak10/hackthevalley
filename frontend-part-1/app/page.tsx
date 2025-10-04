@@ -30,6 +30,21 @@ import { Button } from "@/components/ui/button"
 export default function EcoTokenDashboard() {
   const [activeTab, setActiveTab] = useState("today")
   const [goalType, setGoalType] = useState<"co2" | "water" | "electricity">("co2")
+  const [currentFact, setCurrentFact] = useState(0)
+
+  // =============================================================================
+  // ENVIRONMENTAL FACTS FOR ROTATION
+  // =============================================================================
+  
+  const environmentalFacts = [
+    "Google used 4.3B gallons water in 2021",
+    "U.S. data centers: 163B gallons yearly", 
+    "~2 liters water per 1 kWh energy",
+    "Data centers = 3% global CO₂ emissions",
+    "One GPT-4 query ≈ 0.43 Wh energy",
+    "Training models: 493 tons CO₂ released",
+    "AI may use 6.6B cubic meters water"
+  ]
 
   // =============================================================================
   // MOCK DATA - REPLACE WITH REAL API CALLS
@@ -96,6 +111,16 @@ export default function EcoTokenDashboard() {
     return () => clearInterval(interval)
   }, [])
 
+  /**
+   * Rotate environmental facts every 4 seconds
+   */
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFact((prev) => (prev + 1) % environmentalFacts.length)
+    }, 4000)
+    return () => clearInterval(interval)
+  }, [environmentalFacts.length])
+
   // =============================================================================
   // DATA PREPARATION
   // =============================================================================
@@ -161,6 +186,14 @@ export default function EcoTokenDashboard() {
             HEADER SECTION - User Profile & App Branding
             ===================================================================== */}
         <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 text-white">
+          {/* Powered by Snowflake branding */}
+          <div className="flex justify-end mb-2">
+            <div className="bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
+              <span className="text-xs font-medium text-white/90">Powered by</span>
+              <span className="text-xs font-bold text-white ml-1">Snowflake</span>
+            </div>
+          </div>
+          
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
@@ -337,6 +370,33 @@ export default function EcoTokenDashboard() {
                 <p className="text-lg font-bold text-foreground">
                   {mockUserData.streak} days 🔥
                 </p>
+              </div>
+            </div>
+          </Card>
+
+          {/* =================================================================
+              ENVIRONMENTAL FACT ROTATOR - Educational Information
+              ================================================================= */}
+          <Card className="p-4 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 border-blue-500/10">
+            <div className="text-center">
+              <div className="flex items-center justify-center gap-2 mb-2">
+                <Droplet className="w-4 h-4 text-blue-500" />
+                <span className="text-xs font-medium text-muted-foreground">Did you know?</span>
+              </div>
+              <p className="text-sm text-foreground font-medium transition-all duration-500 ease-in-out">
+                {environmentalFacts[currentFact]}
+              </p>
+              <div className="flex justify-center gap-1 mt-3">
+                {environmentalFacts.map((_, index) => (
+                  <div
+                    key={index}
+                    className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                      index === currentFact 
+                        ? 'bg-blue-500 w-4' 
+                        : 'bg-muted-foreground/30'
+                    }`}
+                  />
+                ))}
               </div>
             </div>
           </Card>
