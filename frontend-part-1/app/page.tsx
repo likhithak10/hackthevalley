@@ -180,12 +180,12 @@ export default function EcoTokenDashboard() {
   
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-sm bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
         
         {/* =====================================================================
             HEADER SECTION - User Profile & App Branding
             ===================================================================== */}
-        <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 text-white">
+        <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-4 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
@@ -233,15 +233,15 @@ export default function EcoTokenDashboard() {
           {/* =================================================================
               ENVIRONMENTAL METRICS CARDS - Water, CO2, Electricity
               ================================================================= */}
-          <div className="grid grid-cols-3 gap-3">
+          <div className="grid grid-cols-3 gap-2">
             
             {/* Water Savings Card */}
-            <Card className="p-4 bg-blue-500/10 border-blue-500/20">
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
-                  <Droplet className="w-5 h-5 text-blue-500" />
+            <Card className="p-3 bg-blue-500/10 border-blue-500/20">
+              <div className="flex flex-col items-center text-center gap-1">
+                <div className="w-8 h-8 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <Droplet className="w-4 h-4 text-blue-500" />
                 </div>
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-xl font-bold text-foreground">
                   {currentMetrics.water}
                 </div>
                 <div className="text-xs text-muted-foreground">Gallons</div>
@@ -250,12 +250,12 @@ export default function EcoTokenDashboard() {
             </Card>
 
             {/* CO2 Savings Card */}
-            <Card className="p-4 bg-emerald-500/10 border-emerald-500/20">
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
-                  <Wind className="w-5 h-5 text-emerald-500" />
+            <Card className="p-3 bg-emerald-500/10 border-emerald-500/20">
+              <div className="flex flex-col items-center text-center gap-1">
+                <div className="w-8 h-8 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                  <Wind className="w-4 h-4 text-emerald-500" />
                 </div>
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-xl font-bold text-foreground">
                   {currentMetrics.co2}
                 </div>
                 <div className="text-xs text-muted-foreground">kg</div>
@@ -264,12 +264,12 @@ export default function EcoTokenDashboard() {
             </Card>
 
             {/* Electricity Savings Card */}
-            <Card className="p-4 bg-amber-500/10 border-amber-500/20">
-              <div className="flex flex-col items-center text-center gap-2">
-                <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
-                  <Zap className="w-5 h-5 text-amber-500" />
+            <Card className="p-3 bg-amber-500/10 border-amber-500/20">
+              <div className="flex flex-col items-center text-center gap-1">
+                <div className="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                  <Zap className="w-4 h-4 text-amber-500" />
                 </div>
-                <div className="text-2xl font-bold text-foreground">
+                <div className="text-xl font-bold text-foreground">
                   {currentMetrics.electricity}
                 </div>
                 <div className="text-xs text-muted-foreground">kWh</div>
@@ -281,7 +281,7 @@ export default function EcoTokenDashboard() {
           {/* =================================================================
               GOALS PROGRESS SECTION - Rotating Goal Display
               ================================================================= */}
-          <Card className="p-4">
+          <Card className="p-3">
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <GoalIcon className={`w-4 h-4 text-${currentGoal.color}-500`} />
@@ -336,12 +336,12 @@ export default function EcoTokenDashboard() {
                 Show all history
               </Button>
             </div>
-            <div className="space-y-1 max-h-48 overflow-y-auto scrollbar-no-arrows">
-              {mockActivities.map((item, i) => (
-                <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 transition-colors">
-                  <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></div>
+            <div className="space-y-1 max-h-24 overflow-y-auto scrollbar-no-arrows">
+              {mockActivities.slice(0, 3).map((item, i) => (
+                <div key={i} className="flex items-center gap-2 p-2 rounded-lg hover:bg-muted/20 transition-colors">
+                  <div className="w-1.5 h-1.5 rounded-full bg-emerald-500 flex-shrink-0"></div>
                   <div className="flex-1 min-w-0">
-                    <span className="text-sm text-foreground">{item.action}</span>
+                    <span className="text-xs text-foreground">{item.action}</span>
                   </div>
                   <span className="text-xs text-muted-foreground flex-shrink-0">{item.time}</span>
                 </div>
@@ -353,7 +353,7 @@ export default function EcoTokenDashboard() {
           {/* =================================================================
               ENVIRONMENTAL FACT ROTATOR - Educational Information
               ================================================================= */}
-          <Card className="p-4 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 border-blue-500/10">
+          <Card className="p-3 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 border-blue-500/10">
             <div className="text-center">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Droplet className="w-4 h-4 text-blue-500" />
