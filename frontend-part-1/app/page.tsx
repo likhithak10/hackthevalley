@@ -1,0 +1,222 @@
+"use client"
+
+import { useState, useEffect } from "react"
+import Image from "next/image"
+import { Card } from "@/components/ui/card"
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
+import { Droplet, Wind, Zap, Clock, Award, User } from "lucide-react"
+import { Button } from "@/components/ui/button"
+
+export default function EcoTokenDashboard() {
+  const [activeTab, setActiveTab] = useState("today")
+  const [goalType, setGoalType] = useState<"co2" | "water" | "electricity">("co2")
+
+  const metrics = {
+    today: { water: 2.7, co2: 14.5, electricity: 47 },
+    week: { water: 18.9, co2: 101.5, electricity: 329 },
+    month: { water: 81.2, co2: 436.8, electricity: 1410 },
+  }
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setGoalType((prev) => {
+        if (prev === "co2") return "water"
+        if (prev === "water") return "electricity"
+        return "co2"
+      })
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
+
+  const currentMetrics = metrics[activeTab as keyof typeof metrics]
+
+  const goalConfigs = {
+    co2: {
+      current: 34,
+      target: 50,
+      unit: "kg CO₂",
+      progress: 68,
+      icon: Wind,
+      color: "emerald",
+    },
+    water: {
+      current: 18.9,
+      target: 30,
+      unit: "Gallons",
+      progress: 63,
+      icon: Droplet,
+      color: "blue",
+    },
+    electricity: {
+      current: 329,
+      target: 500,
+      unit: "kWh",
+      progress: 66,
+      icon: Zap,
+      color: "amber",
+    },
+  }
+
+  const currentGoal = goalConfigs[goalType]
+  const GoalIcon = currentGoal.icon
+
+  return (
+    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 text-white">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="relative w-12 h-12">
+                <Image
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-iE7hcoZ7P7JhAeqqfx8OlI40Gtpipy.png"
+                  alt="EcoToken Logo"
+                  width={48}
+                  height={48}
+                  className="rounded-full"
+                />
+              </div>
+              <div>
+                <h1 className="text-2xl font-bold">EcoToken</h1>
+                <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
+              </div>
+            </div>
+            <Button variant="ghost" size="icon" className="text-white hover:bg-white/20" aria-label="My Profile">
+              <User className="w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-6 space-y-6">
+          {/* Time Period Tabs */}
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+            <TabsList className="grid w-full grid-cols-3">
+              <TabsTrigger value="today">Today</TabsTrigger>
+              <TabsTrigger value="week">Week</TabsTrigger>
+              <TabsTrigger value="month">Month</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          {/* Metrics Cards */}
+          <div className="grid grid-cols-3 gap-3">
+            <Card className="p-4 bg-blue-500/10 border-blue-500/20">
+              <div className="flex flex-col items-center text-center gap-2">
+                <div className="w-10 h-10 rounded-lg bg-blue-500/20 flex items-center justify-center">
+                  <Droplet className="w-5 h-5 text-blue-500" />
+                </div>
+                <div className="text-2xl font-bold text-foreground">{currentMetrics.water}</div>
+                <div className="text-xs text-muted-foreground">Gallons</div>
+                <div className="text-xs font-medium text-foreground">Water Saved</div>
+              </div>
+            </Card>
+
+            <Card className="p-4 bg-emerald-500/10 border-emerald-500/20">
+              <div className="flex flex-col items-center text-center gap-2">
+                <div className="w-10 h-10 rounded-lg bg-emerald-500/20 flex items-center justify-center">
+                  <Wind className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div className="text-2xl font-bold text-foreground">{currentMetrics.co2}</div>
+                <div className="text-xs text-muted-foreground">kg</div>
+                <div className="text-xs font-medium text-foreground">CO₂ Saved</div>
+              </div>
+            </Card>
+
+            <Card className="p-4 bg-amber-500/10 border-amber-500/20">
+              <div className="flex flex-col items-center text-center gap-2">
+                <div className="w-10 h-10 rounded-lg bg-amber-500/20 flex items-center justify-center">
+                  <Zap className="w-5 h-5 text-amber-500" />
+                </div>
+                <div className="text-2xl font-bold text-foreground">{currentMetrics.electricity}</div>
+                <div className="text-xs text-muted-foreground">kWh</div>
+                <div className="text-xs font-medium text-foreground">Energy Saved</div>
+              </div>
+            </Card>
+          </div>
+
+          <Card className="p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <GoalIcon className={`w-4 h-4 text-${currentGoal.color}-500`} />
+                <h3 className="font-semibold text-foreground">Weekly Savings Goal</h3>
+              </div>
+              <span className="text-sm font-bold text-emerald-500">{currentGoal.progress}%</span>
+            </div>
+            <Progress value={currentGoal.progress} className="h-2 bg-muted" />
+            <p className="text-xs text-muted-foreground mt-2">
+              {currentGoal.current} {currentGoal.unit} / {currentGoal.target} {currentGoal.unit} goal
+            </p>
+            <div className="flex items-center justify-center gap-1.5 mt-3">
+              <button
+                onClick={() => setGoalType("co2")}
+                className={`h-1.5 rounded-full transition-all ${
+                  goalType === "co2" ? "w-6 bg-emerald-500" : "w-1.5 bg-muted-foreground/30"
+                }`}
+                aria-label="CO2 goal"
+              />
+              <button
+                onClick={() => setGoalType("water")}
+                className={`h-1.5 rounded-full transition-all ${
+                  goalType === "water" ? "w-6 bg-blue-500" : "w-1.5 bg-muted-foreground/30"
+                }`}
+                aria-label="Water goal"
+              />
+              <button
+                onClick={() => setGoalType("electricity")}
+                className={`h-1.5 rounded-full transition-all ${
+                  goalType === "electricity" ? "w-6 bg-amber-500" : "w-1.5 bg-muted-foreground/30"
+                }`}
+                aria-label="Electricity goal"
+              />
+            </div>
+          </Card>
+
+          <div>
+            <h3 className="font-semibold text-foreground mb-3">Recent Activity</h3>
+            <div className="space-y-2 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+              {[
+                { action: "ChatGPT Prompt optimized", time: "12:30" },
+                { action: "Image generation optimized", time: "12:30" },
+                { action: "Text shortened", time: "12:30" },
+                { action: "Code refactored for efficiency", time: "11:45" },
+                { action: "Email draft compressed", time: "11:20" },
+                { action: "Video quality adjusted", time: "10:55" },
+                { action: "API calls batched", time: "10:30" },
+              ].map((item, i) => (
+                <Card key={i} className="p-3 bg-muted/50">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-muted-foreground" />
+                      <span className="text-sm text-foreground">{item.action}</span>
+                    </div>
+                    <span className="text-xs text-muted-foreground">{item.time}</span>
+                  </div>
+                </Card>
+              ))}
+            </div>
+          </div>
+
+          {/* Eco Score */}
+          <Card className="p-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-emerald-500/20">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
+                  <Award className="w-5 h-5 text-emerald-500" />
+                </div>
+                <div>
+                  <p className="text-xs text-muted-foreground">Eco Score</p>
+                  <p className="text-2xl font-bold text-foreground">8.5/10</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-xs text-muted-foreground">Streak</p>
+                <p className="text-lg font-bold text-foreground">12 days 🔥</p>
+              </div>
+            </div>
+          </Card>
+        </div>
+      </div>
+    </div>
+  )
+}
