@@ -66,9 +66,12 @@ body {
 .min-h-screen { min-height: 100vh; }
 .flex { display: flex; }
 .items-center { align-items: center; }
+.items-start { align-items: flex-start; }
 .justify-center { justify-content: center; }
+.justify-end { justify-content: flex-end; }
 .justify-between { justify-content: space-between; }
 .p-4 { padding: 1rem; }
+.pt-8 { padding-top: 2rem; }
 .p-3 { padding: 0.75rem; }
 .p-2 { padding: 0.5rem; }
 .gap-3 { gap: 0.75rem; }
@@ -77,6 +80,7 @@ body {
 .w-full { width: 100%; }
 .max-w-sm { max-width: 24rem; }
 .max-w-md { max-width: 28rem; }
+.max-w-lg { max-width: 32rem; }
 .rounded-xl { border-radius: 0.75rem; }
 .rounded-lg { border-radius: 0.5rem; }
 .rounded-full { border-radius: 9999px; }
@@ -211,12 +215,12 @@ body {
 
 /* Chrome extension specific adjustments */
 body {
-  width: 420px;
-  min-height: 700px;
+  width: 480px;
+  min-height: 750px;
   margin: 0;
   padding: 0;
 }
 
 .min-h-screen {
-  min-height: 700px;
+  min-height: 750px;
 }

@@ -110,10 +110,10 @@ export default function App() {
   // =============================================================================
   // RENDER COMPONENT
   // =============================================================================
-  
+
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
+    <div className="min-h-screen bg-background flex items-start justify-end p-4 pt-8">
+      <div className="w-full max-w-lg bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
         
         {/* =====================================================================
             HEADER SECTION - User Profile & App Branding
@@ -256,7 +256,7 @@ export default function App() {
           {/* =================================================================
               RECENT ACTIVITIES FEED - User's Eco-Friendly Actions
               ================================================================= */}
-          <div>
+      <div>
             <div className="flex items-center justify-between mb-3">
               <h3 className="font-semibold text-foreground">Recent Activity</h3>
               <button className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground transition-colors">
@@ -284,7 +284,7 @@ export default function App() {
               <div className="flex items-center justify-center gap-2 mb-2">
                 <Droplet className="w-4 h-4 text-blue-500" />
                 <span className="text-xs font-medium text-muted-foreground">Did you know?</span>
-              </div>
+      </div>
               <p className="text-sm text-foreground font-medium transition-all duration-500 ease-in-out">
                 {environmentalFacts[currentFact]}
               </p>
@@ -304,6 +304,6 @@ export default function App() {
           </div>
         </div>
       </div>
-    </div>
+      </div>
   )
 }
