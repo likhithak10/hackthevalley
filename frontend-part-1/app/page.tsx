@@ -201,14 +201,32 @@ export default function EcoTokenDashboard() {
                 <h1 className="text-2xl font-bold">EcoToken</h1>
                 <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
                 {/* Powered by Snowflake branding */}
-                <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full mt-1 w-fit">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full mt-2 ml-2 w-fit">
                   <span className="text-xs font-medium text-white/90">Powered by</span>
                   <div className="flex items-center ml-1">
                     <div className="w-3 h-3 mr-1">
                       <svg viewBox="0 0 24 24" className="w-full h-full fill-white">
-                        {/* Accurate Snowflake logo - central diamond with 6 V-shaped arms */}
-                        <rect x="11" y="11" width="2" height="2" rx="0.5" transform="rotate(45 12 12)"/>
-                        <path d="M12 4L13 8L17 7L14 11L18 12L14 13L17 17L13 16L12 20L11 16L7 17L10 13L6 12L10 11L7 7L11 8Z" fill="white"/>
+                        {/* Central diamond */}
+                        <rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/>
+                        {/* Six arms, rotated */}
+                        <g>
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 0 deg */}
+                        </g>
+                        <g transform="rotate(60 12 12)">
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 60 deg */}
+                        </g>
+                        <g transform="rotate(120 12 12)">
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 120 deg */}
+                        </g>
+                        <g transform="rotate(180 12 12)">
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 180 deg */}
+                        </g>
+                        <g transform="rotate(240 12 12)">
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 240 deg */}
+                        </g>
+                        <g transform="rotate(300 12 12)">
+                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 300 deg */}
+                        </g>
                       </svg>
                     </div>
                     <span className="text-xs font-bold text-white">Snowflake</span>
