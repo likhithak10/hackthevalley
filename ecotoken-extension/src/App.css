@@ -213,14 +213,48 @@ body {
 .bg-muted\/30 { background-color: rgba(241, 245, 249, 0.3); }
 .text-white\/90 { color: rgba(255, 255, 255, 0.9); }
 
+/* Animation classes */
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: .5;
+  }
+}
+
+/* Transform and scale utilities */
+.transform { transform: translateZ(0); }
+.scale-105 { transform: scale(1.05); }
+.scale-\[1\.02\] { transform: scale(1.02); }
+
+/* Duration utilities */
+.duration-200 { transition-duration: 200ms; }
+.duration-300 { transition-duration: 300ms; }
+.duration-500 { transition-duration: 500ms; }
+.duration-1000 { transition-duration: 1000ms; }
+
+/* Hover effects */
+.hover\:scale-105:hover { transform: scale(1.05); }
+.hover\:shadow-lg:hover { box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+.hover\:bg-background\/50:hover { background-color: rgba(255, 255, 255, 0.5); }
+
+/* Min height utility */
+.min-h-\[20px\] { min-height: 20px; }
+
 /* Chrome extension specific adjustments */
 body {
   width: 480px;
-  min-height: 750px;
+  min-height: 800px;
   margin: 0;
   padding: 0;
+  background: #f8fafc !important;
 }
 
 .min-h-screen {
-  min-height: 750px;
+  min-height: 800px;
 }
