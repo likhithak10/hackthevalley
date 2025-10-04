@@ -197,40 +197,13 @@ export default function EcoTokenDashboard() {
                   className="rounded-full"
                 />
               </div>
-              <div>
+              <div className="mt-2">
                 <h1 className="text-2xl font-bold">EcoToken</h1>
                 <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
                 {/* Powered by Snowflake branding */}
-                <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full mt-2 ml-2 w-fit">
+                <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full mt-1 w-fit">
                   <span className="text-xs font-medium text-white/90">Powered by</span>
-                  <div className="flex items-center ml-1">
-                    <div className="w-3 h-3 mr-1">
-                      <svg viewBox="0 0 24 24" className="w-full h-full fill-white">
-                        {/* Central diamond */}
-                        <rect x="10" y="10" width="4" height="4" transform="rotate(45 12 12)"/>
-                        {/* Six arms, rotated */}
-                        <g>
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 0 deg */}
-                        </g>
-                        <g transform="rotate(60 12 12)">
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 60 deg */}
-                        </g>
-                        <g transform="rotate(120 12 12)">
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 120 deg */}
-                        </g>
-                        <g transform="rotate(180 12 12)">
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 180 deg */}
-                        </g>
-                        <g transform="rotate(240 12 12)">
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 240 deg */}
-                        </g>
-                        <g transform="rotate(300 12 12)">
-                          <path d="M12 2 L14 6 L13 8 L11 8 L10 6 Z"/> {/* 300 deg */}
-                        </g>
-                      </svg>
-                    </div>
-                    <span className="text-xs font-bold text-white">Snowflake</span>
-                  </div>
+                  <span className="text-xs font-bold text-white ml-1">Snowflake</span>
                 </div>
               </div>
             </div>
@@ -357,46 +330,25 @@ export default function EcoTokenDashboard() {
               RECENT ACTIVITIES FEED - User's Eco-Friendly Actions
               ================================================================= */}
           <div>
-            <h3 className="font-semibold text-foreground mb-3">Recent Activity</h3>
-            <div className="space-y-2 max-h-48 overflow-y-auto pr-2 scrollbar-thin scrollbar-thumb-muted scrollbar-track-transparent">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="font-semibold text-foreground">Recent Activity</h3>
+              <Button variant="ghost" size="sm" className="h-6 px-2 text-xs text-muted-foreground hover:text-foreground">
+                Show all history
+              </Button>
+            </div>
+            <div className="space-y-1 max-h-48 overflow-y-auto">
               {mockActivities.map((item, i) => (
-                <Card key={i} className="p-3 bg-muted/50">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Clock className="w-4 h-4 text-muted-foreground" />
-                      <span className="text-sm text-foreground">{item.action}</span>
-                    </div>
-                    <span className="text-xs text-muted-foreground">{item.time}</span>
+                <div key={i} className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/20 transition-colors">
+                  <div className="w-2 h-2 rounded-full bg-emerald-500 flex-shrink-0"></div>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-sm text-foreground">{item.action}</span>
                   </div>
-                </Card>
+                  <span className="text-xs text-muted-foreground flex-shrink-0">{item.time}</span>
+                </div>
               ))}
             </div>
           </div>
 
-          {/* =================================================================
-              ECO SCORE & STREAK SECTION - User Achievement Display
-              ================================================================= */}
-          <Card className="p-4 bg-gradient-to-br from-emerald-500/10 to-teal-500/10 border-emerald-500/20">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-emerald-500/20 flex items-center justify-center">
-                  <Award className="w-5 h-5 text-emerald-500" />
-                </div>
-                <div>
-                  <p className="text-xs text-muted-foreground">Eco Score</p>
-                  <p className="text-2xl font-bold text-foreground">
-                    {mockUserData.ecoScore}/10
-                  </p>
-                </div>
-              </div>
-              <div className="text-right">
-                <p className="text-xs text-muted-foreground">Streak</p>
-                <p className="text-lg font-bold text-foreground">
-                  {mockUserData.streak} days 🔥
-                </p>
-              </div>
-            </div>
-          </Card>
 
           {/* =================================================================
               ENVIRONMENTAL FACT ROTATOR - Educational Information
