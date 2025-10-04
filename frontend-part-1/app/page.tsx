@@ -186,14 +186,6 @@ export default function EcoTokenDashboard() {
             HEADER SECTION - User Profile & App Branding
             ===================================================================== */}
         <div className="bg-gradient-to-br from-emerald-600 to-teal-700 p-6 text-white">
-          {/* Powered by Snowflake branding */}
-          <div className="flex justify-end mb-2">
-            <div className="bg-white/10 backdrop-blur-sm px-3 py-1 rounded-full">
-              <span className="text-xs font-medium text-white/90">Powered by</span>
-              <span className="text-xs font-bold text-white ml-1">Snowflake</span>
-            </div>
-          </div>
-          
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="relative w-12 h-12">
@@ -206,7 +198,30 @@ export default function EcoTokenDashboard() {
                 />
               </div>
               <div>
-                <h1 className="text-2xl font-bold">EcoToken</h1>
+                <div className="flex items-center gap-3">
+                  <h1 className="text-2xl font-bold">EcoToken</h1>
+                  {/* Powered by Snowflake branding */}
+                  <div className="flex items-center bg-white/10 backdrop-blur-sm px-2 py-1 rounded-full">
+                    <span className="text-xs font-medium text-white/90">Powered by</span>
+                    <div className="flex items-center ml-1">
+                      <div className="w-4 h-4 mr-1">
+                        <svg viewBox="0 0 24 24" className="w-full h-full fill-white">
+                          {/* Snowflake icon - central diamond with 6 arms */}
+                          <rect x="10" y="10" width="4" height="4" rx="1" transform="rotate(45 12 12)"/>
+                          <rect x="12" y="2" width="2" height="6" rx="1"/>
+                          <rect x="12" y="16" width="2" height="6" rx="1"/>
+                          <rect x="2" y="11" width="6" height="2" rx="1"/>
+                          <rect x="16" y="11" width="6" height="2" rx="1"/>
+                          <rect x="4.5" y="4.5" width="2" height="6" rx="1" transform="rotate(45 5.5 7.5)"/>
+                          <rect x="17.5" y="17.5" width="2" height="6" rx="1" transform="rotate(45 18.5 20.5)"/>
+                          <rect x="17.5" y="4.5" width="6" height="2" rx="1" transform="rotate(-45 20.5 5.5)"/>
+                          <rect x="4.5" y="17.5" width="6" height="2" rx="1" transform="rotate(-45 7.5 18.5)"/>
+                        </svg>
+                      </div>
+                      <span className="text-xs font-bold text-white">Snowflake</span>
+                    </div>
+                  </div>
+                </div>
                 <p className="text-emerald-100 text-sm">your digital footprint reducer</p>
               </div>
             </div>
