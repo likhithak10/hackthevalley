@@ -76,6 +76,7 @@ body {
 .gap-1 { gap: 0.25rem; }
 .w-full { width: 100%; }
 .max-w-sm { max-width: 24rem; }
+.max-w-md { max-width: 28rem; }
 .rounded-xl { border-radius: 0.75rem; }
 .rounded-lg { border-radius: 0.5rem; }
 .rounded-full { border-radius: 9999px; }
@@ -201,14 +202,21 @@ body {
 /* Opacity */
 .opacity-90 { opacity: 0.9; }
 
+/* Additional utility classes */
+.bg-white\/10 { background-color: rgba(255, 255, 255, 0.1); }
+.bg-white\/20 { background-color: rgba(255, 255, 255, 0.2); }
+.bg-muted\/20 { background-color: rgba(241, 245, 249, 0.2); }
+.bg-muted\/30 { background-color: rgba(241, 245, 249, 0.3); }
+.text-white\/90 { color: rgba(255, 255, 255, 0.9); }
+
 /* Chrome extension specific adjustments */
 body {
-  width: 380px;
-  min-height: 600px;
+  width: 420px;
+  min-height: 700px;
   margin: 0;
   padding: 0;
 }
 
 .min-h-screen {
-  min-height: 600px;
+  min-height: 700px;
 }

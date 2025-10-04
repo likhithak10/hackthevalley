@@ -113,7 +113,7 @@ export default function App() {
   
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <div className="w-full max-w-sm bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
+      <div className="w-full max-w-md bg-card border border-border rounded-xl shadow-2xl overflow-hidden">
         
         {/* =====================================================================
             HEADER SECTION - User Profile & App Branding
