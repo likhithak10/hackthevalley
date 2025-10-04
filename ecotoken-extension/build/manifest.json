@@ -1,10 +1,22 @@
 {
   "manifest_version": 3,
-  "name": "React Chrome Extension",
+  "name": "EcoToken",
   "version": "1.0.0",
-  "description": "A simple React app as a Chrome extension",
+  "description": "Track your digital carbon footprint and reduce environmental impact",
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "index.html",
+    "default_title": "EcoToken - Your Digital Footprint Reducer"
   },
-  "permissions": []
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "icons": {
+    "16": "vite.svg",
+    "48": "vite.svg",
+    "128": "vite.svg"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  }
 }
