@@ -5,6 +5,8 @@ This repo contains:
 
 - Extension (React + TypeScript + Vite) that injects an "Optimize" button into text inputs
 - Minimal backend (`server/server.mjs`) that calls a Snowflake stored procedure to optimize text
+<img width="172" height="67" alt="image" src="https://github.com/user-attachments/assets/6eef8f81-a1c6-4da5-9077-0fd3b7a4c3b0" />
+
 
 ### Prerequisites
 
