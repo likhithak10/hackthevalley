@@ -1,6 +1,7 @@
 ## EcoToken Browser Extension
 
-Optimize prompts to save tokens on sites like ChatGPT and Google. This repo contains:
+Optimize prompts to save tokens on sites like ChatGPT 
+This repo contains:
 
 - Extension (React + TypeScript + Vite) that injects an "Optimize" button into text inputs
 - Minimal backend (`server/server.mjs`) that calls a Snowflake stored procedure to optimize text
