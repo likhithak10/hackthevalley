@@ -1,0 +1,32 @@
+{
+  "manifest_version": 3,
+  "name": "EcoToken",
+  "version": "0.1.0",
+  "description": "Optimize prompts to save tokens.",
+  "action": { "default_popup": "index.html" },
+  "background": { "service_worker": "sw.js", "type": "module" },
+  "permissions": ["scripting", "activeTab", "storage"],
+  "host_permissions": [
+    "https://chatgpt.com/*",
+    "https://chat.openai.com/*",
+    "https://www.google.com/*",
+    "http://localhost:3000/*",
+    "http://localhost:3001/*",
+    "http://localhost:3000/api/*",
+    "http://localhost:3001/api/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chatgpt.com/*",
+        "https://chat.openai.com/*",
+        "https://www.google.com/*"
+      ],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    { "resources": ["*.css", "*.png", "*.svg"], "matches": ["<all_urls>"] }
+  ]
+}
