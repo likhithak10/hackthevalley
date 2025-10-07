@@ -79,7 +79,7 @@ async function insertPromptSample(tag, rawText) {
       console.error(`[EcoToken API] insert failed`, { table: tableFqn, tsCol, error: String(e) });
     }
   }
-  // swallow insert errors so optimization can still proceed (proc can use raw text fallback)
+  // swallow insert errors so optimization can still proceed - proc can use raw text fallback
   return false;
 }
 
