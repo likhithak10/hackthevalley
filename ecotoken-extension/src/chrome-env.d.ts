@@ -1,2 +1,2 @@
-/// <reference types="chrome-types" />
+/// <reference types="chrome" />
 
