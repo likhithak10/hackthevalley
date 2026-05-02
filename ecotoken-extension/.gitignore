@@ -49,6 +49,7 @@ server/*.pem
 server/*.key
 server/*.p8
 server/*.pub
+server/.test-rsa-key.p8
 
 # Coverage
 coverage/
