@@ -1,12 +1,33 @@
 ## EcoToken Browser Extension
 
-Optimize prompts to save tokens on sites like ChatGPT 
-This repo contains:
+### What it does
+Problem: People use AI tools every day, but most prompts are longer than they need to be. Every extra word in a prompt costs tokens and resources like water.<br>
+**Ecotoken** optimizes user’s LLM prompts to reduce token usage and cut down emissions with a simple click of a button.
+
+### Architecture
+```
+User types prompt
+      ↓
+Content script (context.tsx) reads the input
+      ↓
+Service worker (sw.ts) forwards it to the backend
+      ↓
+Node.js server (server.mjs) calls Snowflake OPTIMIZE procedure
+      ↓
+Optimized prompt is returned and written back into the input
+```
+
+### This repo contains:
 
 - Extension (React + TypeScript + Vite) that injects an "Optimize" button into text inputs
 - Minimal backend (`server/server.mjs`) that calls a Snowflake stored procedure to optimize text
 <img width="172" height="67" alt="image" src="https://github.com/user-attachments/assets/6eef8f81-a1c6-4da5-9077-0fd3b7a4c3b0" />
 
+### Tech Stack
+- **Frontend:** React + TypeScript + Vite
+- **Chrome Extension:** Manifest V3, content script, service worker
+- **Backend:** Node.js HTTP server
+- **AI/Data:** Snowflake
 
 ### Prerequisites
 
@@ -126,8 +147,7 @@ Click the button to send the current input to the backend and auto-replace it wi
 - `src/context.tsx`: content script that injects the Optimize button and communicates with the service worker
 - `src/sw.ts`: extension service worker calling the backend API (`VITE_API_BASE`)
 - `public/manifest.json`: copied into `build/` during build
-- `server/server.mjs`: loads `.env` and listens (entry)
-- `server/http-app.mjs`: HTTP app factory `createApiServer()` (Snowflake SQL API)
+- `server/server.mjs`: backend server — handles /api/optimize, calls Snowflake, logs statsloads `.env` and listens (entry)
 
 ### Production notes
 
