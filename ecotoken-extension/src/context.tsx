@@ -6,10 +6,12 @@ const SELECTOR = [
   '#prompt-textarea',
   'textarea',
   '[contenteditable="true"]',
+  '[role="textbox"]',
   'input[type="text"]',
   'input[name="q"]'
 ].join(',');
 
+//waits for a text input box to appear on page
 function waitForEditor(): Promise<HTMLElement> {
   return new Promise((resolve) => {
     const found = document.querySelector<HTMLElement>(SELECTOR);
@@ -22,14 +24,16 @@ function waitForEditor(): Promise<HTMLElement> {
   });
 }
 
+//messenger between content script and service worker
 async function safeSendMessage<T=any>(msg: any): Promise<T> {
   try {
-    // If the extension was reloaded, chrome.runtime.id may be missing
+    //if the extension was reloaded, chrome.runtime.id may be missing
+    //if extension is still alive
     if (!chrome?.runtime?.id) throw new Error("EXTENSION_RELOADED");
-    // Ensure SW is awake and listening
+    //ensure SW is awake and listening
     const pong = await chrome.runtime.sendMessage({ type: "PING" }).catch(() => null);
     if (!pong?.ok) throw new Error("SW_NOT_AVAILABLE");
-    // Actual call
+    //actual call- send the actual message if both above checks pass
     return await chrome.runtime.sendMessage(msg);
   } catch (e: any) {
     const m = String(e?.message || e);
@@ -42,7 +46,11 @@ async function safeSendMessage<T=any>(msg: any): Promise<T> {
   }
 }
 
+//reads what the user types in the prompt box
+//tricky because sifferent sites build their text inputs differently
 function readCurrentEditorText(initialTarget: HTMLElement): string | null {
+  
+  //build a list of text box candidates
   const active = document.activeElement as HTMLElement | null;
   const nodeList = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
   const candidates: HTMLElement[] = [];
@@ -53,25 +61,37 @@ function readCurrentEditorText(initialTarget: HTMLElement): string | null {
   let best: string | null = null;
   for (const el of candidates) {
     if (!el) continue;
-    // skip invisible elements
+    //skip invisible elements (no size)
     const rect = el.getBoundingClientRect();
     if (rect.width === 0 || rect.height === 0) continue;
-
+    
+    //keep regular textarea sized boxes
     if ((el as HTMLTextAreaElement).value !== undefined) {
       const v = String((el as HTMLTextAreaElement).value || "").trim();
       if (v.length > 0 && (best === null || v.length > best.length)) best = v;
       continue;
     }
+    //chatgpt case: uses <div contenteditable> instead of textarea (use .innertext)
     if (el.isContentEditable) {
       const v = String((el as HTMLElement).innerText || "").trim();
       if (v.length > 0 && (best === null || v.length > best.length)) best = v;
       continue;
     }
+    //Some UIs don't use a <textarea> or contenteditable and use plain <div role="textbox">
+    if (el.matches('[role="textbox"]')) {
+      const v = String((el as HTMLElement).innerText || el.textContent || "").trim();
+      if (v.length > 0 && (best === null || v.length > best.length)) best = v;
+      continue;
+    }
   }
-  return best;
+  return best; //what had the most text and send that to optimize.
 }
 
+//sister function to readCurrentEditorText
+//finds where to put the optimized text
 function getWritableEditorElement(initialTarget: HTMLElement): HTMLElement | null {
+  
+  //build a list of text box candidates
   const active = document.activeElement as HTMLElement | null;
   const nodeList = Array.from(document.querySelectorAll<HTMLElement>(SELECTOR));
   const candidates: HTMLElement[] = [];
@@ -79,6 +99,8 @@ function getWritableEditorElement(initialTarget: HTMLElement): HTMLElement | nul
   candidates.push(...nodeList);
   if (initialTarget) candidates.push(initialTarget);
 
+  //returns the first visible element it finds 
+  //we just need somewhere to write to
   for (const el of candidates) {
     if (!el) continue;
     const rect = el.getBoundingClientRect();
@@ -88,12 +110,16 @@ function getWritableEditorElement(initialTarget: HTMLElement): HTMLElement | nul
   return null;
 }
 
+//writes the optimized text back into the input box found previously
 function applyOptimizedTextToElement(el: HTMLElement, text: string) {
   try {
-    // textarea / input handled via native setter to trigger frameworks
+    //textarea / input handled via native setter to trigger frameworks
+    //React watches for changes using its own internal setter (.value bypasses it)
     if ((el as HTMLTextAreaElement).value !== undefined) {
       const anyEl = el as unknown as { value?: string };
-      const proto = Object.getPrototypeOf(el);
+      const proto = Object.getPrototypeOf(el); 
+      //native setter to trick React into thinking the user typed it
+      //so hitting send would submit the new text
       const setFromProto = Object.getOwnPropertyDescriptor(proto, "value")?.set
         || Object.getOwnPropertyDescriptor(HTMLTextAreaElement.prototype, "value")?.set
         || Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, "value")?.set;
@@ -102,12 +128,19 @@ function applyOptimizedTextToElement(el: HTMLElement, text: string) {
       } else {
         (anyEl as HTMLTextAreaElement).value = text;
       }
+      //manually fires input and change events
+      //tells react to update its state when something changes
       el.dispatchEvent(new Event("input", { bubbles: true }));
       el.dispatchEvent(new Event("change", { bubbles: true }));
       return;
     }
-    // contenteditable
+    //Chatgpt case: contenteditable
     if (el.isContentEditable) {
+      (el as HTMLElement).innerText = text;
+      el.dispatchEvent(new Event("input", { bubbles: true }));
+      return;
+    }
+    if (el.matches('[role="textbox"]')) {
       (el as HTMLElement).innerText = text;
       el.dispatchEvent(new Event("input", { bubbles: true }));
       return;
@@ -117,42 +150,48 @@ function applyOptimizedTextToElement(el: HTMLElement, text: string) {
   }
 }
 
+//Cleans and extracts optimized text from AI's response
+//Handles 3 different response formats:
 function extractOptimizedText(raw: string): string {
   try {
     if (!raw) return raw;
-    // Strip fenced code blocks like ```json ... ```
+    //1) Strips ```json ... ``` blocks and keep what's inside
     const fenced = raw.match(/```(?:json)?\s*([\s\S]*?)```/i);
     let body = (fenced ? fenced[1] : raw).trim();
-    // If it's JSON and contains optimized_text, parse it
+    //2)If AI responds with JSON object and contains optimized_text, parse it
     if (body.startsWith("{") && body.includes("optimized_text")) {
       try {
+        //pull just the text field
         const obj = JSON.parse(body);
         if (obj && typeof obj.optimized_text === "string") return obj.optimized_text;
       } catch {}
-      // Fallback: regex extract the field
+      //Fallback if JSON.parse fails: regex extract the text field
       const m = body.match(/"optimized_text"\s*:\s*"([\s\S]*?)"/i);
       if (m) return m[1].replace(/\\n/g, "\n");
     }
-    return body; // plain text
+    return body; //3) same plain text if none of above matched
   } catch {
     return raw;
   }
 }
 
+//builds and injects the optimize button into page
 function inject(target: HTMLElement) {
-  if (document.getElementById("ecotoken-root")) return;
+  if (document.getElementById("ecotoken-root")) return; //inject only once
 
-  const host = document.createElement("div");
+  //create a container for the button bottom right of page
+  const host = document.createElement("div"); //container for the button
   host.id = "ecotoken-root";
   host.style.position = "fixed";
   host.style.bottom = "16px";
   host.style.right = "16px";
-  host.style.zIndex = "2147483647";
+  host.style.zIndex = "2147483647"; //ensure button floats above everything else on page
   document.body.appendChild(host);
 
   const shadow = host.attachShadow({ mode: "open" });
 
-  const style = document.createElement("style");
+  //styles for the button
+  const style = document.createElement("style"); 
   style.textContent = `
     :host {
       all: initial;
@@ -248,6 +287,7 @@ function inject(target: HTMLElement) {
     @keyframes rippleExpand { 0%{ transform: scale(0); opacity: 1;} 100%{ transform: scale(2); opacity: 0;} }
   `;
 
+  //button with zap icon and loading dots and "Optimize"
   const wrapper = document.createElement("div");
   wrapper.innerHTML = `
     <button id="btn" class="eco-btn" type="button">
@@ -276,14 +316,17 @@ function inject(target: HTMLElement) {
   const loadingContent = shadow.querySelector(".loading") as HTMLElement;
   const label = shadow.querySelector(".label") as HTMLElement;
 
+  
   async function handleClick() {
     if (btn.disabled) return;
     btn.classList.add("clicked");
+    //remove clicked class after 300ms
     setTimeout(() => btn.classList.remove("clicked"), 300);
 
-    btn.disabled = true;
+    btn.disabled = true; //disable button when clicked
     idleContent.hidden = true;
     loadingContent.hidden = false;
+    //read text and send to SW to optimize, write back and show "x tokens saved"
     try {
       const currentText = readCurrentEditorText(target);
       const res: any = await safeSendMessage({ type: "OPTIMIZE", tag: "lik", raw_filter: null, raw_text: currentText });
@@ -305,16 +348,15 @@ function inject(target: HTMLElement) {
     } finally {
       loadingContent.hidden = true;
       idleContent.hidden = false;
-      setTimeout(() => { label.textContent = "Optimize"; btn.disabled = false; }, 1800);
+      setTimeout(() => { label.textContent = "Optimize"; btn.disabled = false; }, 1800); //resets after 1.8s
     }
   }
 
   btn.addEventListener("click", handleClick);
 }
-
+//re-injects button when user navigates to a new page or comes back to the tab
 waitForEditor().then(inject);
 
-// Re-inject on SPA navigations (ChatGPT changes routes without reload)
 addEventListener("popstate", () => waitForEditor().then(inject));
 addEventListener("visibilitychange", () => {
   if (document.visibilityState === "visible") waitForEditor().then(inject);
