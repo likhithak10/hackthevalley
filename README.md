@@ -1,7 +1,7 @@
 ## EcoToken Browser Extension
 
 ### What it does
-Problem: People use AI tools every day, but most prompts are longer than they need to be. Every extra word in a prompt costs tokens and resources like water.<br>
+Problem: People use AI tools every day, but most prompts are longer than they need to be. Every extra word in a prompt costs tokens and resources like water.<br><br>
 **Ecotoken** optimizes user’s LLM prompts to reduce token usage and cut down emissions with a simple click of a button.
 
 ### Architecture
